@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2026 SCRATCH 暑期培訓班 | 奪金特訓營</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary-gold: #FFD700; 
+            --dark-blue: #1e3c72; 
+            --scratch-orange: #FF8C00; 
+            --python-green: #2ecc71;
+            --table-alt: #f8fafc;
+        }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f4f7fa; color: #2c3e50; margin: 0; padding: 0; overflow-x: hidden; }
+
+        /* Banner 響應式標題 */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(30,60,114,0.92), rgba(42,82,152,0.92)), 
+                        url('https://drive.google.com/thumbnail?id=17uiuhJJHR5620euT18jWZt9VYeI4T2Ki&sz=w2000');
+            background-size: cover; background-position: center; color: white; padding: 100px 0; text-align: center;
+        }
+        .responsive-title { font-weight: 900; line-height: 1.3; font-size: 2.2rem; letter-spacing: 1px; }
+        .responsive-title span { display: inline-block; }
+        @media (min-width: 768px) { .responsive-title { font-size: 3.5rem; } }
+
+        /* 獎牌統計 */
+        .stats-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); margin-top: -60px; }
+        .medal-count { font-size: 3.5rem; font-weight: 900; line-height: 1.2; }
+
+        /* 榜單表格美化 */
+        .award-title { border-left: 10px solid var(--dark-blue); padding-left: 15px; margin: 60px 0 25px; font-weight: 900; color: var(--dark-blue); }
+        .table-container { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .award-table { width: 100%; margin-bottom: 0; border-collapse: collapse; }
+        .award-table tr:nth-child(even) { background-color: var(--table-alt); }
+        .award-table tr:hover { background-color: #eff6ff; transition: background 0.2s; }
+        .award-table td { padding: 15px; border-bottom: 1px solid #e2e8f0; }
+        .award-table tr:last-child td { border-bottom: none; }
+
+        /* 教學理念標籤 */
+        .badge-container { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+        .badge-custom { padding: 8px 12px; border-radius: 8px; background: white; border: 1px solid #ddd; margin: 4px; font-weight: 700; font-size: 0.9rem; color: #444; display: inline-block; }
+        .badge-strict { border: 2.5px solid #ef4444; color: #ef4444; background: #fff5f5; }
+
+        /* 課程說明區塊 */
+        .course-intro-box { border-radius: 20px; padding: 35px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .border-scratch { border-left: 15px solid var(--scratch-orange); background: #fffaf5; }
+        .special-note { background: rgba(255, 140, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px dashed var(--scratch-orange); margin-top: 20px; }
+
+        /* 方案卡片金額置中 */
+        .course-card { display: flex; flex-direction: column; height: 100%; border-radius: 20px; padding: 40px 30px; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 10px solid var(--dark-blue); transition: 0.3s; max-width: 500px; margin: 0 auto; }
+        .course-card:hover { transform: translateY(-8px); }
+        .plan-price { font-size: 2.8rem; font-weight: 900; text-align: center; margin: 20px 0; color: var(--dark-blue); border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 15px 0; }
+        .btn-reg { margin-top: auto; border-radius: 50px; padding: 16px; font-weight: 700; width: 100%; color: white; text-align: center; border: none; text-decoration: none; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; font-size: 1.1rem; }
+
+        /* 底部資安聲明 */
+        .security-box { background-color: #ffffff; border: 1px solid #e2e8f0; font-size: 0.95rem; color: #64748b; line-height: 1.8; }
+
+        /* SPA 載入與成功畫面 */
+        .loader { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); display:none; align-items:center; justify-content:center; z-index:9999; }
+        .success-section { text-align: center; padding: 100px 20px; display: none; background-color: #f4f7fa; min-height: 100vh; }
+        .success-card { background: white; padding: 70px; border-radius: 50px; box-shadow: 0 30px 70px rgba(0,0,0,0.1); max-width: 650px; margin: 0 auto; }
+        .qr-img { width: 240px; height: 240px; margin: 35px auto; border-radius: 30px; border: 1px solid #f1f5f9; padding: 10px; }
+    </style>
+</head>
+<body>
+
+<div id="loader" class="loader">
+    <div class="text-center">
+        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
+        <div class="fw-bold">正在安全傳送您的報名資訊...</div>
+    </div>
+</div>
+
+<div id="main-content">
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="responsive-title">
+                <span>2026 SCRATCH 暑期培訓班</span>
+            </h1>
+            <p class="h3 mt-3" style="color:var(--primary-gold); font-weight: 700;">實力證明，無可取代</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- 獎牌統計區 (數據重算更新) -->
+        <div class="stats-card text-center mb-5">
+            <div class="row">
+                <div class="col-md-6 border-end">
+                    <h5 class="fw-bold mb-4">全國貓咪盃 SCRATCH 程式競賽榜單</h5>
+                    <div class="d-flex justify-content-around">
+                        <div><div class="medal-count fw-bold text-warning">2</div><div class="small fw-bold text-muted">金牌</div></div>
+                        <div><div class="medal-count fw-bold text-secondary">0</div><div class="small fw-bold text-muted">銀牌</div></div>
+                        <div><div class="medal-count fw-bold" style="color:#cd7f32">3</div><div class="small fw-bold text-muted">銅牌</div></div>
+                        <div><div class="medal-count fw-bold text-info">3</div><div class="small fw-bold text-muted">佳作</div></div>
+                    </div>
+                </div>
+                <div class="col-md-6 pt-4 pt-md-0">
+                    <h5 class="fw-bold mb-4">台北市貓咪盃 SCRATCH 程式競賽榜單</h5>
+                    <div class="d-flex justify-content-around">
+                        <div><div class="medal-count fw-bold text-primary">20</div><div class="small fw-bold text-muted">特優</div></div>
+                        <div><div class="medal-count fw-bold text-success">19</div><div class="small fw-bold text-muted">優等</div></div>
+                        <div><div class="medal-count fw-bold" style="color:#f59e0b">39</div><div class="small fw-bold text-muted">佳作</div></div>
+                        <div><div class="medal-count fw-bold text-secondary">53</div><div class="small fw-bold text-muted">入選</div></div>
+                    </div>
+                    <!-- 比例圖尺 (精算比例 20:19:39:53 共131組) -->
+                    <div class="progress mt-4 mx-3" style="height: 12px; border-radius: 10px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 15.3%"></div>
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 14.5%"></div>
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 29.8%"></div>
+                        <div class="progress-bar bg-secondary" role="progressbar" style="width: 40.4%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 全國賽榜單 (新增 114 銅牌) -->
+        <h3 class="award-title">全國貓咪盃 SCRATCH 程式競賽榜單</h3>
+        <div class="table-container mb-5">
+            <table class="award-table">
+ 
+                <tr><td width="120">(113年度)</td><td>國中遊戲組</td><td class="fw-bold text-warning">金牌 (復興中學)</td></tr>
+                <tr><td>(112年度)</td><td>國中遊戲組</td><td class="fw-bold text-warning">金牌 (成淵國中)</td></tr>
+                <tr><td>(114年度)</td><td>國中生應組</td><td class="fw-bold" style="color:#cd7f32">銅牌 (靜心中學)</td></tr>
+                <tr><td>(113年度)</td><td>國中生應組</td><td class="fw-bold" style="color:#cd7f32">銅牌 (靜心中學)</td></tr>
+                <tr><td>(113年度)</td><td>國中遊戲組</td><td class="fw-bold" style="color:#cd7f32">銅牌 (介壽國中)</td></tr>
+                <tr><td>(113年度)</td><td>國小動畫組</td><td>佳作 (市大附小)</td></tr>
+                <tr><td>(111年度)</td><td>國中動畫組</td><td>佳作 (介壽國中)</td></tr>
+                <tr><td>(110年度)</td><td>國中遊戲組</td><td>佳作 (介壽國中)</td></tr>
+            </table>
+        </div>
+
+        <!-- 台北市賽榜單 -->
+        <h3 class="award-title">台北市貓咪盃 SCRATCH 程式競賽榜單</h3>
+        <ul class="nav nav-pills mb-3" id="cityTab" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tp114">114年</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tp113">113年</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tp112">112年</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tp111">111年</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tp110">110年</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tp109">109年</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tp108">108年</button></li>
+        </ul>
+        <div class="tab-content table-container mb-5">
+            <!-- 114年 (最新全面資料) -->
+            <div class="tab-pane fade show active" id="tp114">
+                <table class="award-table">
+                    <tr><td wdith="120">(114年度)</td><td>國中生活應用組</td><td class="fw-bold text-primary">特優 (靜心中學)</td></tr>
+                    <tr><td>(114年度)</td><td>國中生活應用組</td><td class="fw-bold text-primary">特優 (大直國中)</td></tr>
+                    <tr><td>(114年度)</td><td>國小動畫組</td><td class="fw-bold text-primary">特優 (靜心小學)</td></tr>
+                    <tr><td>(114年度)</td><td>國小動畫組</td><td class="fw-bold text-primary">特優 (靜心小學)</td></tr>
+                    <tr><td>(114年度)</td><td>國小互動遊戲組</td><td class="fw-bold text-primary">特優 (靜心小學)</td></tr>
+                    <tr><td>(114年度)</td><td>國小互動遊戲組</td><td class="fw-bold text-primary">特優 (健康國小)</td></tr>
+                    <tr><td>(114年度)</td><td>國中生活應用組</td><td class="fw-bold text-success">優等 (靜心中學)</td></tr>
+                    <tr><td>(114年度)</td><td>國小動畫組</td><td class="fw-bold text-success">優等 (靜心小學)</td></tr>
+                    <tr><td>(114年度)</td><td>國小互動遊戲組</td><td class="fw-bold text-success">優等 (靜心小學)</td></tr>
+                    <tr><td>(114年度)</td><td>國小互動遊戲組</td><td class="fw-bold text-success">優等 (光復國小)</td></tr>
+                    <tr><td>(114年度)</td><td>國小動畫組</td><td>佳作 (靜心小學)</td></tr>
+                    <tr><td>(114年度)</td><td>國小互動遊戲組</td><td>佳作 (靜心小學)</td></tr>
+                    <tr><td>(114年度)</td><td>國中生活應用組</td><td>佳作 (延平中學)</td></tr>
+                    <tr><td>(114年度)</td><td>國中生活應用組</td><td>佳作 (仁愛國中)</td></tr>
+                </table>
+            </div>
+            
+            <!-- 113年-108年歷史榜單保留 -->
+            <div class="tab-pane fade" id="tp113">
+                <table class="award-table">
+                    <tr><td width="120">(113年度)</td><td>國中生應組</td><td>特優 (靜心中學)</td></tr>
+                    <tr><td>(113年度)</td><td>國中生應組</td><td>特優 (靜心中學)</td></tr>
+                    <tr><td>(113年度)</td><td>國小動畫組</td><td>優等 (靜心小學)</td></tr>
+                    <tr><td>(113年度)</td><td>國小遊戲組</td><td>優等 (靜心小學)</td></tr>
+                    <tr><td>(113年度)</td><td>國小動畫組</td><td>佳作 (靜心小學)</td></tr>
+                    <tr><td>(113年度)</td><td>國小動畫組</td><td>佳作 (靜心小學)</td></tr>
+                    <tr><td>(113年度)</td><td>國小遊戲組</td><td>佳作 (日新國小)</td></tr>
+                    <tr><td>(113年度)</td><td>國小遊戲組</td><td>佳作 (光復國小)</td></tr>
+                    <tr><td>(113年度)</td><td>國小遊戲組</td><td>佳作 (健康國小)</td></tr>
+                    <tr><td>(113年度)</td><td>國小遊戲組</td><td>佳作 (靜心小學)</td></tr>
+                    <tr><td>(113年度)</td><td>國中生應組</td><td>佳作 (士林國中)</td></tr>
+                    <tr><td>(113年度)</td><td>國中生應組</td><td>佳作 (中正國中)</td></tr>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="tp112">
+                <table class="award-table">
+                    <tr><td width="120">(112年度)</td><td>國小動畫組</td><td>特優 (市大附小)</td></tr>
+                    <tr><td>(112年度)</td><td>國小遊戲組</td><td>特優 (龍安國小)</td></tr>
+                    <tr><td>(112年度)</td><td>國中遊戲組</td><td>特優 (介壽國中)</td></tr>
+                    <tr><td>(112年度)</td><td>國中遊戲組</td><td>特優 (復興中學)</td></tr>
+                    <tr><td>(112年度)</td><td>國小動畫組</td><td>優等 (麗山國小)</td></tr>
+                    <tr><td>(112年度)</td><td>國小遊戲組</td><td>優等 (靜心小學)</td></tr>
+                    <tr><td>(112年度)</td><td>國中動畫組</td><td>優等 (靜心中學)</td></tr>
+                    <tr><td>(112年度)</td><td>國中遊戲組</td><td>優等 (敦化國中)</td></tr>
+                    <tr><td>(112年度)</td><td>國小動畫組</td><td>佳作 (大直國小)</td></tr>
+                    <tr><td>(112年度)</td><td>國小動畫組</td><td>佳作 (光復國小)</td></tr>
+                    <tr><td>(112年度)</td><td>國小遊戲組</td><td>佳作 (民生國小)</td></tr>
+                    <tr><td>(112年度)</td><td>國中動畫組</td><td>佳作 (士林國中)</td></tr>
+                    <tr><td>(112年度)</td><td>國中動畫組</td><td>佳作 (金華國中)</td></tr>
+                    <tr><td>(112年度)</td><td>國中遊戲組</td><td>佳作 (靜心中學)</td></tr>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="tp111">
+                <table class="award-table">
+                    <tr><td width="120">(111年度)</td><td>國中遊戲組</td><td>特優 (成淵國中)</td></tr>
+                    <tr><td>(111年度)</td><td>國中遊戲組</td><td>特優 (敦化國中)</td></tr>
+                    <tr><td>(111年度)</td><td>國小動畫組</td><td>優等 (南湖國小)</td></tr>
+                    <tr><td>(111年度)</td><td>國小動畫組</td><td>優等 (靜心小學)</td></tr>
+                    <tr><td>(111年度)</td><td>國小遊戲組</td><td>優等 (光復國小)</td></tr>
+                    <tr><td>(111年度)</td><td>國中動畫組</td><td>優等 (介壽國中)</td></tr>
+                    <tr><td>(111年度)</td><td>國中遊戲組</td><td>優等 (靜心中學)</td></tr>
+                    <tr><td>(111年度)</td><td>國小動畫組</td><td>佳作 (葫蘆國小)</td></tr>
+                    <tr><td>(111年度)</td><td>國小動畫組</td><td>佳作 (麗山國小)</td></tr>
+                    <tr><td>(111年度)</td><td>國小遊戲組</td><td>佳作 (民族國小)</td></tr>
+                    <tr><td>(111年度)</td><td>國小遊戲組</td><td>佳作 (靜心小學)</td></tr>
+                    <tr><td>(111年度)</td><td>國中動畫組</td><td>佳作 (中崙國中)</td></tr>
+                    <tr><td>(111年度)</td><td>國中遊戲組</td><td>佳作 (介壽國中)</td></tr>
+                    <tr><td>(111年度)</td><td>國中遊戲組</td><td>佳作 (靜心中學)</td></tr>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="tp110">
+                <table class="award-table">
+                    <tr><td width="120">(110年度)</td><td>國小動畫組</td><td>特優 (靜心小學)</td></tr>
+                    <tr><td>(110年度)</td><td>國小遊戲組</td><td>特優 (光復國小)</td></tr>
+                    <tr><td>(110年度)</td><td>國中動畫組</td><td>特優 (介壽國中)</td></tr>
+                    <tr><td>(110年度)</td><td>國中遊戲組</td><td>特優 (敦化國中)</td></tr>
+                    <tr><td>(110年度)</td><td>國小遊戲組</td><td>優等 (民生國小)</td></tr>
+                    <tr><td>(110年度)</td><td>國小動畫組</td><td>佳作 (民生國小)</td></tr>
+                    <tr><td>(110年度)</td><td>國小動畫組</td><td>佳作 (光復國小)</td></tr>
+                    <tr><td>(110年度)</td><td>國小遊戲組</td><td>佳作 (大佳國小)</td></tr>
+                    <tr><td>(110年度)</td><td>國中動畫組</td><td>佳作 (介壽國中)</td></tr>
+                    <tr><td>(110年度)</td><td>國中動畫組</td><td>佳作 (敦化國中)</td></tr>
+                    <tr><td>(110年度)</td><td>國中遊戲組</td><td>佳作 (麗山國中)</td></tr>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="tp109">
+                <table class="award-table">
+                    <tr><td width="120">(109年度)</td><td>國小遊戲組</td><td>特優 (民生國小)</td></tr>
+                    <tr><td>(109年度)</td><td>國中遊戲組</td><td>特優 (敦化國中)</td></tr>
+                    <tr><td>(109年度)</td><td>國小動畫組</td><td>優等 (光復國小)</td></tr>
+                    <tr><td>(109年度)</td><td>國中遊戲組</td><td>優等 (介壽國中)</td></tr>
+                    <tr><td>(109年度)</td><td>國小動畫組</td><td>佳作 (民生國小)</td></tr>
+                    <tr><td>(109年度)</td><td>國小動畫組</td><td>佳作 (光復國小)</td></tr>
+                    <tr><td>(109年度)</td><td>國小遊戲組</td><td>佳作 (民生國小)</td></tr>
+                    <tr><td>(109年度)</td><td>國小遊戲組</td><td>佳作 (銘傳國小)</td></tr>
+                    <tr><td>(109年度)</td><td>國中動畫組</td><td>佳作 (仁愛國中)</td></tr>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="tp108">
+                <table class="award-table">
+                    <tr><td width="120">(108年度)</td><td>國中遊戲組</td><td class="fw-bold text-success">優等 (介壽國中)</td></tr>
+                    <tr><td>(108年度)</td><td>國小遊戲組</td><td>佳作 (民生國小)</td></tr>
+                    <tr><td>(108年度)</td><td>國小遊戲組</td><td>佳作 (民生國小)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <h3 class="award-title">其他縣市競賽榜單</h3>
+        <div class="table-container mb-5">
+            <table class="award-table">
+                <tr><td width="120">(114年度)</td><td>資訊科技競賽 (澎湖)</td><td class="fw-bold text-primary">特優</td></tr>
+                <tr><td>(114年度)</td><td>國中生應組 (澎湖)</td><td>甲等</td></tr>
+            </table>
+        </div>
+
+        <!-- 老師介紹與更新版標籤 -->
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-5 text-center mb-4">
+                <img src="https://drive.google.com/thumbnail?id=1QXKoDJHKBUhFIzW_kqDnipLRb8U9Zn01&sz=w1000" class="img-fluid rounded-4 shadow" alt="Coach">
+            </div>
+            <div class="col-lg-7">
+                <h2 class="fw-bold mb-3" style="color:var(--dark-blue)">以賽促學，磨練協作真本事</h2>
+                <div class="badge-container">
+                    <span class="badge-custom">國中遊戲組金牌連莊成功</span>
+                    <span class="badge-custom">連續六年全國賽獲獎</span>
+                    <span class="badge-custom">連續六年台北市特優</span>
+                    <span class="badge-custom">三組別均曾獲特優獎</span>
+                    <span class="badge-custom">連續四年得獎佔比 30-40%</span>
+                    <span class="badge-custom">累計 135 組台北市賽晉級獲獎</span>
+                    <span class="badge-custom">深耕團隊分工協作</span>
+                    <span class="badge-custom badge-strict">嚴格實作要求</span>
+                    <span class="badge-custom badge-strict">不適合只想體驗者</span>
+                </div>
+                <p class="text-muted mt-3" style="line-height: 1.8;">我們將「得獎」視為激勵學習的共同目標。透過爭取榮譽，激勵學生在大量的實作練習中克服挑戰。</p>
+            </div>
+        </div>
+
+        <!-- SCRATCH 課程詳細說明 (含特別說明) -->
+        <div class="course-intro-box border-scratch">
+            <h3 class="fw-bold mb-3" style="color:var(--scratch-orange)">🐱 SCRATCH 暑期競賽特訓線上班 (ZOOM)</h3>
+            <p class="fw-bold mb-3">【以競賽為目標，發掘程式潛力】</p>
+            
+            <div class="row g-4 small text-dark mb-4">
+                <div class="col-md-6">
+                    <strong class="text-secondary">【以賽促學，鍛鍊真本事】</strong><br>
+                    ● <strong>精準對標：</strong>針對台北市競賽自編教材。<br>
+                    ● <strong>高強訓練：</strong>賽前密集實作練習，需配合密集作業。<br>
+                    ● <strong>能力養成：</strong>自學、思考、表達力與團隊共作。
+                </div>
+                <div class="col-md-6">
+                    <strong class="text-secondary">【學習模式：精實工作坊】</strong><br>
+                    ● <strong>線上實作：</strong>透過 ZOOM 進行案例分享與深度討論。<br>
+                    ● <strong>名師指導：</strong>老師針對作業給予一對一修正建議。
+                </div>
+            </div>
+
+            <!-- 四項特別說明 -->
+            <div class="special-note">
+                <h6 class="fw-bold mb-3" style="color:var(--scratch-orange);"><i class="fas fa-exclamation-circle me-2"></i>【特別說明】</h6>
+                <div class="row g-3 small text-secondary">
+                    <div class="col-md-6">
+                        <strong>參賽權益：</strong> 本班為校外培訓，代表學校參賽之權利請依各校校內選拔辦法為準。<br><br>
+                        <strong>時間投入：</strong> 競賽班作業要求較高，請家長務必預留充足練習時間，支持孩子完成高品質作品。
+                    </div>
+                    <div class="col-md-6">
+                        <strong>組隊建議：</strong> 比賽採兩人一隊（需同校），強烈建議與校內學伴一同報名；若無隊友，賽前由老師協助媒合。<br><br>
+                        <strong>程度不限：</strong> 已學過 Scratch 者亦適合參加，同樣題目隨功力加深，能展現完全不同的作品深度與完成度。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 報名卡片 (專注暑期單一課程) -->
+        <h2 class="text-center fw-bold mt-5 mb-4">預約 2026 奪金席位</h2>
+        <div class="row g-4 mb-5 justify-content-center">
+            <div class="col-md-6">
+                <div class="course-card">
+                    <h4 class="fw-bold text-center mb-3">SCRATCH 暑期競賽特訓線上班</h4>
+                    <div class="bg-light rounded-3 p-3 text-start small mb-3">
+                        <p class="mb-2"><i class="far fa-calendar-alt text-warning me-2"></i><b>日期：</b>2026 7/5, 7/12, 7/19, 7/26, 8/9, 8/16, 8/23, 8/30</p>
+                        <p class="mb-2"><i class="far fa-clock text-warning me-2"></i><b>時間：</b>19:00 上課</p>
+                        <p class="mb-2"><i class="fas fa-video text-warning me-2"></i><b>方式：</b>ZOOM 線上直播授課</p>
+                        <p class="mb-0 text-primary fw-bold"><i class="fas fa-history me-2"></i>有影片可回看</p>
+                    </div>
+                    <div class="plan-price">$24,000</div>
+                    <button class="btn-reg" style="background:var(--scratch-orange);" onclick="selectCourse('SCRATCH 暑期競賽特訓線上班 ($24,000)')">立即報名</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 表單區 (保留所有原始欄位) -->
+        <section id="reg-form" class="bg-white rounded-4 shadow p-5 my-5">
+            <h2 class="text-center fw-bold mb-5">填寫報名資訊</h2>
+            <form id="enrollmentForm">
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="form-label fw-bold">家長姓名 *</label><input type="text" name="parentName" class="form-control" required></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">學生姓名 *</label><input type="text" name="studentName" class="form-control" required></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">就讀學校 *</label><input type="text" name="school" class="form-control" required></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">聯絡電話 *</label><input type="tel" name="phone" class="form-control" required></div>
+                    <div class="col-12"><label class="form-label fw-bold">電子郵件 *</label><input type="email" name="email" class="form-control" required></div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold">選擇課程 *</label>
+                        <select name="course" id="courseSelect" class="form-select" required>
+                            <option value="">請點擊方案或下拉選擇...</option>
+                            <option value="SCRATCH 暑期競賽特訓線上班 ($24,000)">SCRATCH 暑期競賽特訓線上班 ($24,000)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="form-label fw-bold">推薦人</label><input type="text" name="referrer" class="form-control" placeholder="若無請留空"></div>
+                    <div class="col-12"><label class="form-label fw-bold">備註</label><textarea name="note" class="form-control" rows="3" placeholder="其他建議或需求"></textarea></div>
+                    <div class="col-12 text-center mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold rounded-pill">確認送出報名資訊</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- 資安聲明 -->
+        <section class="my-5">
+            <div class="p-4 rounded-4 security-box shadow-sm">
+                <h6 class="fw-bold text-secondary mb-3"><i class="fas fa-shield-alt me-2"></i>隱私權與資訊安全聲明</h6>
+                <p class="mb-2">本報名系統託管於 GitHub 平台，表單採用加密傳輸技術與 Google 雲端伺服器進行同步。頂端若出現官方警示屬標準官方規範，請安心使用。</p>
+                <ul class="mb-0 ps-3">
+                    <li><strong>資料安全：</strong> 報名資料皆加密存儲於受保護的 Google 試算表中，絕不外流。</li>
+                    <li><strong>用途限制：</strong> 資訊僅用於 2026 培訓班行政聯絡。</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="text-center text-muted mb-5 small">© 2026 SCRATCH WORKSHOP All Rights Reserved.</div>
+    </div>
+</div>
+
+<!-- 成功頁面 -->
+<div id="success-view" class="success-section">
+    <div class="success-card">
+        <h1 style="color:var(--scratch-orange); font-weight: 900;">報名成功！ 🎉</h1>
+        <p class="my-4 text-muted fw-bold">確認信已寄發至您的電子郵件，請查收。<br>同時請掃描下方 QR Code 或點擊按鈕加入課程 LINE 群組，以接收後續重要通知。</p>
+        
+        <img src="https://drive.google.com/thumbnail?id=1X_HHICkYzEsqY973idqqBCH4D4Mn39Tm&sz=w1000" class="qr-img" alt="LINE QR">
+        
+        <div class="mt-4">
+            <a href="https://line.me/R/ti/g/7z-pJ4hQfG" target="_blank" class="btn btn-success btn-lg w-100 fw-bold rounded-pill py-3 shadow-sm">
+                <i class="fab fa-line me-2"></i>點我加入 LINE 群組
+            </a>
+        </div>
+        
+        <p class="mt-5"><a href="javascript:void(0)" onclick="goBack()" class="text-decoration-none text-secondary">← 返回報名首頁</a></p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    /* 完全保留原始 GAS 傳輸邏輯 */
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbybxkugYTILJ5i-cnq56hJOIb11Oh8_dH2vjtRAhBKHACkeQxHyFI7Pak2_hhsXphS2/exec";
+
+    document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('loader').style.display = 'flex';
+        
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => data[key] = value);
+
+        fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors', // 避開 CORS 限制
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(() => {
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('main-content').style.display = 'none';
+                document.getElementById('success-view').style.display = 'block';
+                window.scrollTo(0, 0);
+            }, 800);
+        }).catch(err => {
+            alert("傳送失敗，請檢查網路。");
+            document.getElementById('loader').style.display = 'none';
+        });
+    });
+    
+    function selectCourse(name) {
+        const select = document.getElementById('courseSelect');
+        for (let opt of select.options) {
+            if (opt.value.includes(name)) { select.value = opt.value; break; }
+        }
+        document.getElementById('reg-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function goBack() {
+        document.getElementById('enrollmentForm').reset();
+        document.getElementById('main-content').style.display = 'block';
+        document.getElementById('success-view').style.display = 'none';
+        window.scrollTo(0, 0);
+    }
+</script>
+</body>
+</html>
